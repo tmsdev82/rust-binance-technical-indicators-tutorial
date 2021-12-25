@@ -1,8 +1,9 @@
 mod statistics;
-
 #[cfg(test)]
 mod test_statistics;
+mod utils;
 
-fn main() {
-    println!("Hello, world!");
+#[tokio::main]
+async fn main() {
+    let client = utils::get_client();
 }
