@@ -36,4 +36,13 @@ async fn main() {
     };
 
     println!("EMA: {:?}", ema_data);
+
+    let result = statistics::moving_average_convergence_divergence(&price_data, 12, 26, 9);
+
+    let macd_data = match result {
+        Some(data) => data,
+        _ => panic!("Calculating MACD failed"),
+    };
+
+    println!("MACD: {:?}", macd_data);
 }
