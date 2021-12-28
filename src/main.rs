@@ -27,4 +27,13 @@ async fn main() {
     };
 
     println!("SMA: {:?}", sma_data);
+
+    let result = statistics::exponential_moving_average(&price_data, 26);
+
+    let ema_data = match result {
+        Some(data) => data,
+        _ => panic!("Calculating EMA failed"),
+    };
+
+    println!("EMA: {:?}", ema_data);
 }
