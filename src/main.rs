@@ -17,4 +17,14 @@ async fn main() {
         }
     };
     println!("first result: {:?}", kline_data[0]);
+
+    let price_data: Vec<f64> = kline_data.iter().rev().take(100).map(|f| f.close).collect();
+    let result = statistics::simple_moving_average(&price_data, 26);
+
+    let sma_data = match result {
+        Some(data) => data,
+        _ => panic!("Calculating SMA failed"),
+    };
+
+    println!("SMA: {:?}", sma_data);
 }
