@@ -91,4 +91,48 @@ mod test_statistics {
             result.signal
         );
     }
+
+    #[test]
+    fn test_bollinger_bands() {
+        let data_set = vec![
+            5.0, 6.0, 4.0, 2.0, 1.5, 1.0, 2.0, 3.0, 3.5, 3.5, 4.0, 4.5, 5.0,
+        ];
+
+        let result = bollinger_bands(&data_set, 20, 2.0);
+        assert_eq!(None, result);
+
+        let result = bollinger_bands(&data_set, 8, 2.0).unwrap();
+
+        assert_eq!(6, result.middle_bound.len());
+        assert_eq!(
+            vec![3.0625, 2.875, 2.5625, 2.5625, 2.875, 3.3125],
+            result.middle_bound
+        );
+
+        assert_eq!(6, result.upper_bound.len());
+        assert_eq!(
+            vec![
+                6.395572906493346,
+                5.906088913245535,
+                4.589659342528357,
+                4.589659342528357,
+                5.206844763272204,
+                5.758798223847616
+            ],
+            result.upper_bound
+        );
+
+        assert_eq!(6, result.lower_bound.len());
+        assert_eq!(
+            vec![
+                -0.27057290649334576,
+                -0.1560889132455352,
+                0.535340657471643,
+                0.535340657471643,
+                0.5431552367277961,
+                0.8662017761523844
+            ],
+            result.lower_bound
+        );
+    }
 }

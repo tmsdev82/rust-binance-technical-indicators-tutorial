@@ -72,3 +72,49 @@ pub fn moving_average_convergence_divergence(
 
     Some(MACD { macd, signal })
 }
+
+#[derive(PartialEq, Debug)]
+pub struct BollingerBands {
+    pub upper_bound: Vec<f64>,
+    pub middle_bound: Vec<f64>,
+    pub lower_bound: Vec<f64>,
+}
+
+pub fn bollinger_bands(
+    data_list: &Vec<f64>,
+    window_size: usize,
+    multiplier: f64,
+) -> Option<BollingerBands> {
+    let middle_bound_result = simple_moving_average(data_list, window_size);
+
+    let middle_bound = match middle_bound_result {
+        Some(middle_bound) => middle_bound,
+        _ => return None,
+    };
+
+    let mut upper_bound: Vec<f64> = Vec::new();
+    let mut lower_bound: Vec<f64> = Vec::new();
+
+    for i in 0..middle_bound.len() {
+        let slice = &data_list[i..window_size + i];
+        let variance = slice
+            .iter()
+            .map(|value| {
+                let diff = middle_bound[i] - (*value as f64);
+                diff * diff
+            })
+            .sum::<f64>()
+            / window_size as f64;
+
+        let standard_deviation = variance.sqrt();
+
+        upper_bound.push(middle_bound[i] + multiplier * standard_deviation);
+        lower_bound.push(middle_bound[i] - multiplier * standard_deviation);
+    }
+
+    Some(BollingerBands {
+        upper_bound,
+        middle_bound,
+        lower_bound,
+    })
+}

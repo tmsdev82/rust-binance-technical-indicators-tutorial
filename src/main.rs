@@ -45,4 +45,19 @@ async fn main() {
     };
 
     println!("MACD: {:?}", macd_data);
+
+    let typical_price_data: Vec<f64> = kline_data
+        .iter()
+        .rev()
+        .take(100)
+        .map(|f| (f.high + f.low + f.close) / 3.0)
+        .collect();
+    let result = statistics::bollinger_bands(&typical_price_data, 20, 2.0);
+
+    let boll_data = match result {
+        Some(data) => data,
+        _ => panic!("Calculating BOLL failed"),
+    };
+
+    println!("BOLL: {:?}", boll_data);
 }
