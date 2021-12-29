@@ -60,4 +60,13 @@ async fn main() {
     };
 
     println!("BOLL: {:?}", boll_data);
+
+    let result = statistics::relative_strength_index(&price_data, 14);
+
+    let rsi_data = match result {
+        Some(data) => data,
+        _ => panic!("Calculating RSI failed"),
+    };
+
+    println!("RSI: {:?}", rsi_data);
 }

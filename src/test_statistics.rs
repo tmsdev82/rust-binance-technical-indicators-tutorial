@@ -135,4 +135,41 @@ mod test_statistics {
             result.lower_bound
         );
     }
+
+    #[test]
+    fn test_relative_strength_index() {
+        let data_set = vec![
+            5.0, 6.0, 4.0, 2.0, 1.5, 1.0, 2.0, 3.0, 3.5, 3.5, 4.0, 4.5, 5.0,
+        ];
+
+        let result = relative_strength_index(&data_set, 14);
+        assert_eq!(None, result);
+
+        let result = relative_strength_index(&data_set, 8).unwrap();
+
+        assert_eq!(5, result.len());
+        assert_eq!(
+            vec![
+                56.852791878172596,
+                56.852791878172596,
+                59.17295654731064,
+                61.256328819550575,
+                63.16578540011347
+            ],
+            result
+        );
+
+        let data_set = vec![
+            44.34, 44.09, 44.15, 43.61, 44.33, 44.83, 45.10, 45.42, 45.84, 46.08, 45.89, 46.03,
+            45.61, 46.28, 46.28, 46.00, 46.03,
+        ];
+
+        let result = relative_strength_index(&data_set, 14).unwrap();
+
+        assert_eq!(3, result.len());
+        assert_eq!(
+            vec![70.53539393736207, 66.436571546019, 66.66146763681454],
+            result
+        );
+    }
 }
